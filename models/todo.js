@@ -13,6 +13,6 @@ const todoSchema = new Schema({
         rating: Number,
         description: string
     }
-}
 })
+
 module.exports = mongoose.model('Todo', todoSchema)
