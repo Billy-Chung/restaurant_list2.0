@@ -3,6 +3,7 @@ const app = express()
 const port = 3000
 const exphbs = require('express-handlebars')
 const mongoose = require('mongoose') // 載入 mongoose
+const Todo = require('./models/todo') // 載入 Todo model
 // 設定連線到 mongoDB
 mongoose.connect('mongodb://localhost/restaurant_list', { useNewUrlParser: true, useUnifiedTopology: true }) 
 
@@ -16,8 +17,7 @@ db.on('error', () => {
 db.once('open', () => {
   console.log('mongodb connected!')
 })
-//json的清單
-const restaurantList = require('./restaurant.json')
+
 
 app.engine('handlebars', exphbs({ defaultLayout: 'main' }))
 app.set('view engine', 'handlebars')
@@ -25,8 +25,10 @@ app.set('view engine', 'handlebars')
 app.use(express.static('public'))
 
 app.get('/', (req, res) => {
-
-  res.render('index', { restaurants: restaurantList.results });
+  Todo.find() // 取出 Todo model 裡的所有資料
+    .lean() // 把 Mongoose 的 Model 物件轉換成乾淨的 JavaScript 資料陣列
+    .then(todos => res.render('index', { todos })) // 將資料傳給 index 樣板
+    .catch(error => console.error(error)) // 錯誤處理
 })
 
 app.get('/restaurants/:restaurant_id', (req, res) => {
