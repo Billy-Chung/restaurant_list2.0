@@ -49,10 +49,21 @@ app.post('/todos', (req, res) => {
       .catch((error) => console.log(error))
 })
 
+//設定詳細頁面的路由
+app.get('/todos/:id', (req, res) => {
+  const id = req.params.id
+  return Todo.findById(id)
+    .lean()
+    .then((todo) => res.render('detail', { todo }))
+    .catch(error => console.log(error))
+})
+
+//設置伺服器的監聽器
 app.listen(port, () => {
   console.log(`Express is listening on localhost:${port}`)
 })
 
+//搜尋功能的路由
 app.get('/search', (req, res) => {
   const keyword = req.query.keyword
   const restaurants = Todo.find(restaurant => {
@@ -60,3 +71,4 @@ app.get('/search', (req, res) => {
   })
   res.render('index', { restaurants: restaurants, keyword: keyword })
 })
+
