@@ -37,7 +37,7 @@ app.get('/todos/new', (req, res) => {
   return res.render('new')
 })
 
-//在資料庫新增資料的路由
+//在資料庫新增餐廳資料的路由
 app.post('/todos', (req, res) => {
   console.log(req.body)  
   if(!req.body.image.length){
@@ -58,6 +58,46 @@ app.get('/todos/:id', (req, res) => {
     .catch(error => console.log(error))
 })
 
+//設定編輯路由
+app.get('/todos/:id/edit', (req, res) => {
+  const id = req.params.id
+  return Todo.findById(id)
+    .lean()
+    .then((todo) => res.render('edit', { todo }))
+    .catch(error => console.log(error))
+})
+
+//修改並將編輯的內容放進伺服器內
+app.post('/todos/:id/edit', (req, res) => {
+  const id = req.params.id
+  const name = req.body.name
+  const nameEn = req.body.name_en
+  const category = req.body.category
+  const image = req.body.image
+  const location = req.body.location
+  const phone = req.body.phone
+  const googleMap = req.body.google_map
+  const rating = req.body.rating
+  const description = req.body.description
+  return Todo.findById(id)
+      //如果查詢成功，幫我儲存資料
+      .then((restaurant) => {
+        restaurant.name = name
+        restaurant.nameEn = nameEn
+        restaurant.category = category
+        restaurant.image = image
+        restaurant.location = location
+        restaurant.phone = phone
+        restaurant.googleMap = googleMap
+        restaurant.rating = rating
+        restaurant.description = description
+        return restaurant.save()
+      })
+      //如果儲存成功，重新導向那筆的詳細頁面
+      .then(() => res.redirect(`/todos/${id}`))
+      .catch((error) => console.log(error))
+})
+
 //設置伺服器的監聽器
 app.listen(port, () => {
   console.log(`Express is listening on localhost:${port}`)
@@ -66,9 +106,19 @@ app.listen(port, () => {
 //搜尋功能的路由
 app.get('/search', (req, res) => {
   const keyword = req.query.keyword
-  const restaurants = Todo.find(restaurant => {
-    return restaurant.name.toLowerCase().includes(keyword.toLowerCase())
-  })
-  res.render('index', { restaurants: restaurants, keyword: keyword })
+  return Todo.find()
+    .lean()
+    .then(todos => {
+      const results = todos.filter(
+        item =>
+          item.name.toLowerCase().includes(keyword.toLowerCase()) ||
+          item.category.toLowerCase().includes(keyword.toLowerCase())
+      )
+      if (results.length > 0) {
+        res.render('index', { todos: results, keyword: keyword })
+      } else {
+        res.render('nothing', { keyword: keyword })
+      }
+    })
+    .catch(error => console.log(error))
 })
-

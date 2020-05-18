@@ -18,7 +18,7 @@
                 </span>
                 {{todo.location}}
                 <a href="https://goo.gl/maps/V9mKwVJ4s5v" class="text-secondary" target="_blank">
-                    <i class="fas fa-location-arrow pr-2 fa-xs"></i>
+                    <i class="fas fa-location-arrow pr-2 fa-xs">在google map中查看</i>
                 </a>
             </p>
 
@@ -38,6 +38,7 @@
                 style="max-width: 600px;">
 
             <div class="buttons">
+                <a href="/todos/{{ todo._id }}/edit" class="btn btn-secondary mb-4" type="button">edit</a>
                 <a href="/" class="btn btn-secondary mb-4" type="button">返回</a>
             </div>
         </div>
