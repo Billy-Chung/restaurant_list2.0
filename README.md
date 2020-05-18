@@ -21,7 +21,7 @@
 
 # Installing - 安裝流程
 * Open the terminal and clone our project
-* git clone 
+* git clone  https://github.com/Billy-Chung/restaurant_list2.0.git
 * FoodAdvisor_CURD.git
 * Access the directory
 * cd FoodAdvisor_CURD
