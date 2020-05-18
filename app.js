@@ -98,6 +98,15 @@ app.post('/todos/:id/edit', (req, res) => {
       .catch((error) => console.log(error))
 })
 
+//設定刪除的路由
+app.post('/todos/:id/delete', (req, res) => {
+  const id = req.params.id
+  return Todo.findById(id)
+    .then(todo => todo.remove())
+    .then(() => res.redirect('/'))
+    .catch(error => console.log(error))
+})
+
 //設置伺服器的監聽器
 app.listen(port, () => {
   console.log(`Express is listening on localhost:${port}`)

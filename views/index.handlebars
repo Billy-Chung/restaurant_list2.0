@@ -9,7 +9,7 @@
             aria-label="Restaurant Name..." value="" aria-describedby="search-button">
           <div class="input-group-append">
             <button class="btn btn-major" type="submit" id="search-button"><i class="fas fa-search"></i></button>
-          </div>          
+          </div>
         </div>
         <a href="./todos/new">Create</a>
       </form>
@@ -41,6 +41,9 @@
             </div>
             <a href="./todos/{{ this._id }}">detail</a>
             <a href="./todos/{{ this._id }}/edit">edit</a>
+            <form action="./todos/{{ this._id }}/delete" method="POST" style="display: inline;">
+              <button type="submit">delete</button>
+            </form>
           </div>
         </a>
         {{/each}}

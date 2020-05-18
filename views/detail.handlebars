@@ -39,9 +39,11 @@
 
             <div class="buttons">
                 <a href="/todos/{{ todo._id }}/edit" class="btn btn-secondary mb-4" type="button">edit</a>
+                <form action="/todos/{{ todo._id }}/delete" method="POST" style="display: inline;">
+                    <button type="submit">delete</button>
+                </form>
                 <a href="/" class="btn btn-secondary mb-4" type="button">返回</a>
             </div>
         </div>
     </div>
 </div>
-
